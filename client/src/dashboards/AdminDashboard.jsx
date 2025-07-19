@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { FiPlus, FiX, FiEdit2, FiTrash2, FiCalendar, FiRefreshCw, FiSave,FiLogOut } from 'react-icons/fi';
 import { useNavigate } from 'react-router-dom'; 
 import axios from 'axios';
+const VITE_BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
 
 const AdminDashboard = () => {
   const [showCreateUser, setShowCreateUser] = useState(false);
@@ -59,7 +60,7 @@ const AdminDashboard = () => {
         throw new Error('No authentication token found');
       }
 
-      const response = await axios.get('http://localhost:4000/employees', {
+      const response = await axios.get(`${VITE_BACKEND_URL}/employees`, {
         headers: {
           Authorization: `Bearer ${token}`,
           'Cache-Control': 'no-cache'
@@ -144,7 +145,7 @@ const AdminDashboard = () => {
       }
 
       await axios.post(
-        'http://localhost:4000/employees/create',
+        `${VITE_BACKEND_URL}/employees/create`,
         userData,
         {
           headers: {
@@ -200,7 +201,7 @@ const AdminDashboard = () => {
       }
 
       const response = await axios.patch(
-        `http://localhost:4000/employees/employees/${editingUserId}`,
+        `${VITE_BACKEND_URL}/employees/employees/${editingUserId}`,
         editFormData,
         {
           headers: {
@@ -238,7 +239,7 @@ const AdminDashboard = () => {
           throw new Error('No authentication token found');
         }
 
-        await axios.delete(`http://localhost:4000/employees/employees/${userId}`, {
+        await axios.delete(`${VITE_BACKEND_URL}/employees/employees/${userId}`, {
           headers: {
             Authorization: `Bearer ${token}`
           }

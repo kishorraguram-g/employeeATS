@@ -120,7 +120,7 @@ exports.login = async (req, res) => {
 
        
         const employee = await Employee.findOne({ email }).select('+password');
-        console.log("Employee found:", employee);
+        // console.log("Employee found:", employee);
         if (!employee || password !== employee.password) { 
             return res.status(401).json({
                 status: "fail",
@@ -128,7 +128,7 @@ exports.login = async (req, res) => {
             });
         }
 
-    
+        console.log("user succesfully logged in  and token sent wit status code 200");
         const token = signin(employee._id);
         res.status(200).json({
             status: "success",

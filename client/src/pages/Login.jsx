@@ -3,7 +3,7 @@ import { FiMail, FiLock, FiArrowRight } from 'react-icons/fi';
 import { FaSpinner } from 'react-icons/fa';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios'; 
-
+const VITE_BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
 const Login = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -20,7 +20,7 @@ const Login = () => {
 
     try {
       console.log(email+" "+password)
-      const response = await axios.post("http://localhost:4000/employees/login", {
+      const response = await axios.post(`${VITE_BACKEND_URL}/employees/login`, {
         email,
         password,
       });

@@ -12,13 +12,14 @@ exports.createAttendance = async (req, res) => {
         }
 
         const employee = await Employee.findById(employeeId);
+        console.log("request receiver");
         if (!employee) {
             return res.status(404).json({
                 status: 'fail',
                 message: 'Employee not found'
             });
         }
-
+        
         const team = await Team.findById(teamId);
         if (!team) {
             return res.status(404).json({

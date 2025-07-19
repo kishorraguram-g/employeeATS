@@ -23,6 +23,7 @@ import {
   Snackbar,
   Alert
 } from '@mui/material';
+const VITE_BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
 import { Logout as LogoutIcon } from '@mui/icons-material';
 import dayjs from 'dayjs';
 
@@ -48,7 +49,7 @@ const AttendanceSummary = () => {
       employeeId=JSON.parse(employeeId)
       const response = await axios.get(
 
-        `http://localhost:4000/attendance/team-summary/${employeeId}`,
+        `${VITE_BACKEND_URL}/attendance/team-summary/${employeeId}`,
         {
           headers: {
             'Authorization': `Bearer ${token}`,

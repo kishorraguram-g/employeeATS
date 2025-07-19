@@ -3,7 +3,7 @@ import axios from 'axios';
 import { toast } from 'react-toastify';
 import { useNavigate } from 'react-router-dom';
 import { FiLogOut, FiUser, FiCalendar, FiX, FiCheck, FiXCircle, FiClock, FiHome, FiActivity } from 'react-icons/fi';
-
+const VITE_BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
 const EmployeeDashboard = () => {
   const [attendanceSummary, setAttendanceSummary] = useState([]);
   const [filteredRecords, setFilteredRecords] = useState([]);
@@ -56,7 +56,7 @@ const EmployeeDashboard = () => {
           return;
         }
 
-        const response = await axios.get(`http://localhost:4000/attendance/me/${employeeId}`, {
+        const response = await axios.get(`${VITE_BACKEND_URL}/attendance/me/${employeeId}`, {
           headers: {
             Authorization: `Bearer ${token}`
           }

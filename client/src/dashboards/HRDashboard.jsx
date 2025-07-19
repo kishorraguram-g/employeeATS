@@ -3,7 +3,7 @@ import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import { FiLogOut, FiUsers, FiCalendar, FiHome, FiUserPlus, FiUser, FiSettings, FiPieChart, FiClock } from 'react-icons/fi';
 import { toast } from 'react-toastify';
-
+const VITE_BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
 const HRDashboard = () => {
   const [activeTab, setActiveTab] = useState('teams');
   const [teams, setTeams] = useState([]);
@@ -20,7 +20,7 @@ const HRDashboard = () => {
         return;
       }
       
-      const response = await axios.get('http://localhost:4000/department/all-teams', {
+      const response = await axios.get(`${VITE_BACKEND_URL}/department/all-teams`, {
         headers: { Authorization: `Bearer ${token}` }
       });
       setTeams(response.data.data || []);
@@ -35,7 +35,7 @@ const HRDashboard = () => {
     try {
       setLoading(true);
       const token = localStorage.getItem('token');
-      const response = await axios.get('http://localhost:4000/attendance/all-attendance', {
+      const response = await axios.get(`${VITE_BACKEND_URL}/attendance/all-attendance`, {
         headers: { Authorization: `Bearer ${token}` }
       });
       console.log(response.data);
@@ -219,7 +219,7 @@ const TeamsTab = ({ teams: initialTeams, loading, refreshTeams }) => {
     if (showAddMemberModal && selectedTeam) {
       const fetchEmployees = async () => {
         try {
-          const response = await axios.get('http://localhost:4000/employees', {
+          const response = await axios.get(`${VITE_BACKEND_URL}/employees`, {
             headers: {
               'Authorization': `Bearer ${localStorage.getItem('token')}`
             }
@@ -244,7 +244,7 @@ const TeamsTab = ({ teams: initialTeams, loading, refreshTeams }) => {
     if (showAddManagerModal && selectedTeam) {
       const fetchManagers = async () => {
         try {
-          const response = await axios.get('http://localhost:4000/employees', {
+          const response = await axios.get(`${VITE_BACKEND_URL}/employees`, {
             headers: {
               'Authorization': `Bearer ${localStorage.getItem('token')}`
             }
@@ -274,7 +274,7 @@ const TeamsTab = ({ teams: initialTeams, loading, refreshTeams }) => {
     e.preventDefault();
     setIsSubmitting(true);
     try {
-      await axios.post('http://localhost:4000/department/create', {
+      await axios.post(`${VITE_BACKEND_URL}/department/create`, {
         teamName: formData.teamName,
         department: formData.department
       }, {
@@ -297,7 +297,7 @@ const TeamsTab = ({ teams: initialTeams, loading, refreshTeams }) => {
   const handleAddMember = async (employeeId) => {
     setIsSubmitting(true);
     try {
-      await axios.post('http://localhost:4000/department/add-employee', {
+      await axios.post(`${VITE_BACKEND_URL}/department/add-employee`, {
         teamId: selectedTeam._id,
         employeeId
       }, {
@@ -319,7 +319,7 @@ const TeamsTab = ({ teams: initialTeams, loading, refreshTeams }) => {
   const handleAddManager = async (managerId) => {
     setIsSubmitting(true);
     try {
-      await axios.post('http://localhost:4000/department/add-manager', {
+      await axios.post(`${VITE_BACKEND_URL}/department/add-manager`, {
         teamId: selectedTeam._id,
         managerId
       }, {
@@ -342,7 +342,7 @@ const TeamsTab = ({ teams: initialTeams, loading, refreshTeams }) => {
     if (!window.confirm('Are you sure you want to delete this team?')) return;
     
     try {
-      await axios.delete('http://localhost:4000/department/delete-team', {
+      await axios.delete(`${VITE_BACKEND_URL}/department/delete-team`, {
         headers: {
           'Content-Type': 'application/json',
           'Authorization': `Bearer ${localStorage.getItem('token')}`
@@ -631,7 +631,7 @@ const AttendanceTab = ({ data, loading }) => {
   useEffect(() => {
     const fetchEmployees = async () => {
       try {
-        const response = await axios.get('http://localhost:4000/employees', {
+        const response = await axios.get(`${VITE_BACKEND_URL}/employees`, {
           headers: {
             'Authorization': `Bearer ${localStorage.getItem('token')}`
           }
@@ -657,7 +657,7 @@ const AttendanceTab = ({ data, loading }) => {
     setIsSubmitting(true);
     try {
       const response = await axios.post(
-        'http://localhost:4000/attendance/attendancebyemail',
+        `${VITE_BACKEND_URL}/attendance/attendancebyemail`,
         {
           email: formData.employeeEmail,
           date: formData.date,
@@ -697,7 +697,7 @@ const AttendanceTab = ({ data, loading }) => {
 
     setIsDeleting(true);
     try {
-      await axios.delete('http://localhost:4000/attendance/attendancebyemail', {
+      await axios.delete(`${VITE_BACKEND_URL}/attendance/attendancebyemail`, {
         headers: {  
           'Content-Type': 'application/json',
           'Authorization': `Bearer ${localStorage.getItem('token')}`
@@ -935,7 +935,7 @@ const EmployeesTab = () => {
     try {
       setLoading(true);
       const token = localStorage.getItem('token');
-      const response = await axios.get('http://localhost:4000/employees', {
+      const response = await axios.get(`${VITE_BACKEND_URL}/employees`, {
         headers: {
           'Authorization': `Bearer ${token}`
         }
@@ -970,7 +970,7 @@ const EmployeesTab = () => {
       }
 
       const response = await axios.post(
-        'http://localhost:4000/employees/create',
+        `${VITE_BACKEND_URL}/employees/create`,
         formData,
         {
           headers: {
@@ -1033,7 +1033,7 @@ const EmployeesTab = () => {
       }
 
       const response = await axios.patch(
-        `http://localhost:4000/employees/employees/${currentEmployee._id}`,
+        `${VITE_BACKEND_URL}/employees/employees/${currentEmployee._id}`,
         updateData,
         {
           headers: {
@@ -1060,7 +1060,7 @@ const EmployeesTab = () => {
     try {
       setLoading(true);
       const token = localStorage.getItem('token');
-      await axios.delete(`http://localhost:4000/employees/employees/${id}`, {
+      await axios.delete(`${VITE_BACKEND_URL}/employees/employees/${id}`, {
         headers: {
           'Authorization': `Bearer ${token}`
         }
@@ -1078,7 +1078,7 @@ const EmployeesTab = () => {
 
   const designationOptions = [
     'Developer', 'Lead Developer', 'Project Manager',
-    'HR', 'Admin', 'Manager', 'QA', 'Tech Support',
+     'Manager', 'QA', 'Tech Support',
     'UX/UI Designer', 'System Architect', 'Employee'
   ];
 
